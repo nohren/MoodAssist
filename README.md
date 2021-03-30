@@ -1,3 +1,3 @@
 # MoodAssistMVP
 
-The one you want around to slam dunk your hoops of happiness.
+MoodAssists job is to toss you a well crafted Ali-Oop for your wellness slam dunk.
