@@ -1,12 +1,14 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import React, { Component } from 'react';
-// import { makeStyles } from '@material-ui/core/styles';
 import Radio from '@material-ui/core/Radio';
 import { RadioGroup } from '@material-ui/core';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import axios from 'axios';
-
+import { makeStyles } from '@material-ui/core/styles';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
 
 export default class extends Component {
   constructor(props) {
@@ -22,8 +24,10 @@ export default class extends Component {
       showHoverConfident: false,
       emotion: '',
       time: '',
-      actions : [{ actionPhrase: 'Run your favorite trail', helpfulness: 5, date: new Date()  }],
-      thoughts: [{ thoughtPhrase: 'and ponder getting a new dog', helpfulness: 5, date: new Date()  }]
+      cssFlash: false,
+      suggestion: false,
+      actions: [{ actionPhrase: 'Run your favorite trail', helpfulness: 5, date: new Date() }],
+      thoughts: [{ thoughtPhrase: 'and ponder getting a new dog', helpfulness: 5, date: new Date() }]
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleClickSuggestion = this.handleClickSuggestion.bind(this);
@@ -53,14 +57,14 @@ export default class extends Component {
   }
 
   getSuggestion() {
-  
+
     axios.get(`http://localhost:3000/api/backend?emotion=${this.state.emotion}&time=${this.state.time}`)
-    .then((result) => {
-      console.log(result)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+      .then((result) => {
+        console.log(result)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   // postThought() {
@@ -82,6 +86,15 @@ export default class extends Component {
 
   handleClickSuggestion() {
     this.getSuggestion()
+    this.setState({ cssFlash: true })
+
+    //capture app reference
+    const app = this;
+    const toggleCSS = () => {
+      this.setState({ cssFlash: false, suggestion: true })
+    }
+    const boundToggle = toggleCSS.bind(this);
+    setTimeout(boundToggle, 3000);
   }
 
 
@@ -91,7 +104,7 @@ export default class extends Component {
     return (
       <div className={styles.container}>
         <Head>
-          <title>MoodAssistMVP</title>
+          <title>MoodAssist</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
@@ -217,23 +230,21 @@ export default class extends Component {
             </RadioGroup>
 
           </div>
-          <p className={styles.suggestion}>
+          <p className={styles.suggestionContext}>
             Mood assist sends you suggestions based on your current mood. These suggestions are modeled off the action-thought
             paradigm of nuerolinguistic programming (NLP).
           </p>
-
-          <p className={styles.suggestion}>
-            Suggestion: {this.state.actions[0].actionPhrase} and {this.state.thoughts[0].thoughtPhrase}!
-          
-          <button className={styles.button}
-          onClick={this.handleClickSuggestion}
-          >
-            Ali-Oop my mood!
+          <div className={this.state.cssFlash ? styles.suggestionCardImg : styles.suggestionCard}>
+            {this.state.suggestion && !this.state.cssFlash?
+              <p className={styles.suggestion}>
+                {this.state.actions[0].actionPhrase} and {this.state.thoughts[0].thoughtPhrase}!
+              </p> : null}
+          </div>
+            <button className={styles.button}
+              onClick={this.handleClickSuggestion}
+            >
+              Ali-Oop my mood!
           </button>
-          </p>
-
-
-
         </main>
       </div>
     )
