@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://MoodAssist:1989@cluster0.3cs5k.mongodb.net/moodAssist?retryWrites=true&w=majority');
+const mongoURI = require('../config/mongoURI');
+mongoose.connect(mongoURI);
 
 const db = mongoose.connection;
 
