@@ -223,15 +223,16 @@ export default class extends Component {
           </p>
 
           <p className={styles.suggestion}>
-             Suggestion: {this.state.actions[0].actionPhrase} and {this.state.thoughts[0].thoughtPhrase}!
-          </p>
-
-
+            Suggestion: {this.state.actions[0].actionPhrase} and {this.state.thoughts[0].thoughtPhrase}!
+          
           <button className={styles.button}
           onClick={this.handleClickSuggestion}
           >
             Ali-Oop my mood!
           </button>
+          </p>
+
+
 
         </main>
       </div>

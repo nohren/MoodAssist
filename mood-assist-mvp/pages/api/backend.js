@@ -1,4 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+const db = require('../../db/dbIndex')
 
 //http://localhost:3000/api/backend
 export default (req, res) => {
