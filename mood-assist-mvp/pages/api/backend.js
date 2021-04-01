@@ -2,6 +2,8 @@
 // const db = require('../../db/dbIndex')
 const query = require('../../db/query')
 
+//cors and possibly shortened url?
+
 //http://localhost:3000/api/backsend
 export default (req, res) => {
 

@@ -57,7 +57,7 @@ export default class extends Component {
   }
 
   getSuggestion() {
-    axios.get(`http://localhost:3000/api/backend?emotion=${this.state.emotion}&timeRequired=${this.state.time}`)
+    axios.get(`api/backend?emotion=${this.state.emotion}&timeRequired=${this.state.time}`)
       .then((result) => {
         var actions = result.data.actions;
         var thoughts = result.data.thoughts;
@@ -122,7 +122,7 @@ export default class extends Component {
       timeRequired: time,
       phrase
     }
-    axios.post('http://localhost:3000/api/backend?kind=thought', params)
+    axios.post('api/backend?kind=thought', params)
     .then((result) => {
       console.log(result)
     })
@@ -139,7 +139,7 @@ export default class extends Component {
       timeRequired: time,
       phrase
     }
-    axios.post('http://localhost:3000/api/backend?kind=action', params)
+    axios.post('api/backend?kind=action', params)
     .then((result) => {
       console.log(result)
     })
