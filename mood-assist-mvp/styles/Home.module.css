@@ -182,6 +182,11 @@
   flex-direction: column;
   justify-content: space-between;
   width: 370px;
+ 
+}
+
+.radioGroup {
+  margin: auto;
 }
 
 .buttonContainer {

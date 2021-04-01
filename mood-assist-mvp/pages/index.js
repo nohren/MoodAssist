@@ -77,7 +77,12 @@ export default class extends Component {
           })
           let action = randomObj(actionFilter);
           let thought = randomObj(thoughtFilter);
-          //set state with them
+          if (action === undefined) {
+            action = {action: 'No actions for the time selected.  Add one!'}
+          }
+          if (thought === undefined) {
+            thought = {thought: 'No thoughts for the time selected. Add one!'}
+          }
           this.setState({
             action,
             thought
@@ -92,6 +97,12 @@ export default class extends Component {
           })
           let action = randomObj(actionFilter);
           let thought = randomObj(thoughtFilter);
+          if (action === undefined) {
+            action = {action: 'No actions for the time selected.  Add one!'}
+          }
+          if (thought === undefined) {
+            thought = {thought: 'No thoughts for the time selected. Add one!'}
+          }
           //set state with them
           this.setState({
             action,
@@ -106,6 +117,12 @@ export default class extends Component {
           })
           let action = randomObj(actionFilter);
           let thought = randomObj(thoughtFilter);
+          if (action === undefined) {
+            action = {action: 'No actions for the time selected.  Add one!'}
+          }
+          if (thought === undefined) {
+            thought = {thought: 'No thoughts for the time selected. Add one!'}
+          }
           //set state with them
           this.setState({
             action,
@@ -294,7 +311,7 @@ export default class extends Component {
             Now select how much time you have to do something for your mood
           </p>
           <div className={styles.newCard}>
-            <RadioGroup aria-label="gender" name="time" value={this.state.time} onChange={this.handleChange}>
+            <RadioGroup className={styles.radioGroup} aria-label="gender" name="time" value={this.state.time} onChange={this.handleChange}>
               <FormControlLabel value="0" control={<Radio color="primary" />} label="Couple minutes" />
               <FormControlLabel value="1" control={<Radio color="primary" />} label="Couple hours" />
               <FormControlLabel value="2" control={<Radio color="primary" />} label="Let's Schedule it!" />
