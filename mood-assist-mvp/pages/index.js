@@ -6,6 +6,7 @@ import { RadioGroup } from '@material-ui/core';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import axios from 'axios';
 import Modal from '../components/personalizeModal';
+import randomObj from '../helpers/helpers'
 
 export default class extends Component {
   constructor(props) {
@@ -23,8 +24,8 @@ export default class extends Component {
       time: '',
       cssFlash: false,
       suggestion: false,
-      actions: [{ actionPhrase: 'Run your favorite trail', helpfulness: 5, date: new Date() }],
-      thoughts: [{ thoughtPhrase: 'pondering getting a new dog', helpfulness: 5, date: new Date() }]
+      action: {},
+      thought: {}
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleClickSuggestion = this.handleClickSuggestion.bind(this);
@@ -58,7 +59,55 @@ export default class extends Component {
   getSuggestion() {
     axios.get(`http://localhost:3000/api/backend?emotion=${this.state.emotion}&timeRequired=${this.state.time}`)
       .then((result) => {
-        console.log(result)
+        var actions = result.data.actions;
+        var thoughts = result.data.thoughts;
+        var time = Number(this.state.time);
+        //select one action obj and one thought obj at random given the time allotted
+        //filter the arrays for that
+        if (time === 0) {
+          let actionFilter = actions.filter(action => {
+            return action.timeRequired === 0;  
+          })
+          let thoughtFilter = thoughts.filter(thought => {
+            return thought.timeRequired === 0;  
+          })
+          let action = randomObj(actionFilter);
+          let thought = randomObj(thoughtFilter);
+          //set state with them
+          this.setState({
+            action,
+            thought
+          })
+          
+        } else if (time === 1) {
+          let actionFilter = actions.filter(action => {
+            return action.timeRequired === 1;  
+          })
+          let thoughtFilter = thoughts.filter(thought => {
+            return thought.timeRequired === 0 || thought.timeRequired === 1;  
+          })
+          let action = randomObj(actionFilter);
+          let thought = randomObj(thoughtFilter);
+          //set state with them
+          this.setState({
+            action,
+            thought
+          })
+        } else {
+          let actionFilter = actions.filter(action => {
+            return action.timeRequired === 1 || action.timeRequired === 2;  
+          })
+          let thoughtFilter = thoughts.filter(thought => {
+            return thought.timeRequired === 0 || thought.timeRequired === 1 || thought.timeRequired === 2;  
+          })
+          let action = randomObj(actionFilter);
+          let thought = randomObj(thoughtFilter);
+          //set state with them
+          this.setState({
+            action,
+            thought
+          })
+        }
       })
       .catch((err) => {
         console.log(err)
@@ -67,7 +116,7 @@ export default class extends Component {
 
   postThought(emotion, time, phrase) {
     // console.log('thought post')
-    console.log(emotion + ' ' + time + " " + phrase)
+    // console.log(emotion + ' ' + time + " " + phrase)
     const params = {
       emotion,
       timeRequired: time,
@@ -85,6 +134,18 @@ export default class extends Component {
   postAction(emotion, time, phrase) {
     // console.log('action post')
     // console.log(emotion + ' ' + time + " " + phrase)
+    const params = {
+      emotion,
+      timeRequired: time,
+      phrase
+    }
+    axios.post('http://localhost:3000/api/backend?kind=action', params)
+    .then((result) => {
+      console.log(result)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   }
 
   handleClickSuggestion() {
@@ -96,7 +157,6 @@ export default class extends Component {
     this.setState({ cssFlash: true })
 
     //capture app reference
-    const app = this;
     const toggleCSS = () => {
       this.setState({ cssFlash: false, suggestion: true })
     }
@@ -134,7 +194,7 @@ export default class extends Component {
                 {this.state.showHoverHappy || this.state.emotion === 'happy' ?
                     <div
                       className={styles.hoverText}
-                    >happy</div> : null}
+                    >Happy</div> : null}
                 </div>
                 <div className={styles.emoji}
                   onMouseEnter={() => { this.setState({ showHoverAngry: true }) }}
@@ -199,7 +259,7 @@ export default class extends Component {
                 {this.state.showHoverSad || this.state.emotion === 'sad' ?
                     <div
                       className={styles.hoverText}
-                    >sad</div> : null}
+                    >Sad</div> : null}
                 </div>
                 <div className={styles.emoji}
                   onMouseEnter={() => { this.setState({ showHoverConfident: true }) }}
@@ -214,9 +274,9 @@ export default class extends Component {
                 <div className={styles.emoji}
                   onMouseEnter={() => { this.setState({ showHoverLove: true }) }}
                   onMouseLeave={() => { this.setState({ showHoverLove: false }) }}
-                  onClick={() => { this.chooseEmotion('love') }}
+                  onClick={() => { this.chooseEmotion('loved') }}
                 >😍
-                {this.state.showHoverLove || this.state.emotion === 'love' ?
+                {this.state.showHoverLove || this.state.emotion === 'loved' ?
                     <div
                       className={styles.hoverText}
                     >Loved</div> : null}
@@ -244,7 +304,7 @@ export default class extends Component {
           <div className={this.state.cssFlash ? styles.suggestionCardImg : styles.suggestionCard}>
             {this.state.suggestion && !this.state.cssFlash ?
               <p className={styles.suggestion}>
-                {this.state.actions[0].actionPhrase} while {this.state.thoughts[0].thoughtPhrase}!
+                {this.state.action.action} and {this.state.thought.thought}!
               </p> : null}
           </div>
           <div className={styles.buttonContainer}>
