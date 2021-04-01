@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SimpleModal({postAction, postThought, emotion}) {
+export default function SimpleModal({ postAction, postThought, emotion, emojiPic }) {
     const classes = useStyles();
     // getModalStyle is not a pure function, we roll the style only on the first render
     const [modalStyle] = React.useState(getModalStyle);
@@ -41,7 +41,7 @@ export default function SimpleModal({postAction, postThought, emotion}) {
 
     const handleOpen = () => {
         //check if an emotion selected
-        emotion === '' ? alert('You must select an emotion before you can personalize its suggestions!') : setOpen(true);
+        emotion === '' ? alert('You must select an emotion before you can personalize your suggestions!') : setOpen(true);
     };
 
     const handleClose = () => {
@@ -52,9 +52,9 @@ export default function SimpleModal({postAction, postThought, emotion}) {
         //track emotion 
         //based on activity do that
         if (activity === 'action') {
-          postAction(emotion, time, phrase);
+            postAction(emotion, time, phrase);
         } else if (activity === 'thought') {
-          postThought(emotion, time, phrase)
+            postThought(emotion, time, phrase)
         }
         // console.log(postAction)
         // console.log(postThought)       
@@ -62,23 +62,35 @@ export default function SimpleModal({postAction, postThought, emotion}) {
         // console.log(activity)
         // console.log(time)
         // console.log(phrase)
+
+        //close modal 
+        handleClose();
+        returnToDefaultState();
     };
 
+    const returnToDefaultState = () => {
+        setActivity('');
+        setTime('');
+        setPhrase('');
+    }
+
     const onChangeText = (e) => {
-      setPhrase(e.target.value)
+        setPhrase(e.target.value)
     };
 
 
     const body = (
         <div style={modalStyle} className={classes.paper}>
-            <h2 id="simple-modal-title">Select to personalize your suggestions </h2>
-                    <Select setTime={setTime} setActivity={setActivity} activity={activity} time={time}/>
-                <span className={styles.input}>
-                    <input className={styles.inputWidth} onChange={onChangeText} name="phrase" type="text" value={phrase} />
-                </span>
-            <button 
-              className={styles.button}
-              onClick={onClickSubmit} 
+            <h2 id="simple-modal-title">Personalize your suggestions for {emojiPic}</h2>
+            <Select setTime={setTime} setActivity={setActivity} activity={activity} time={time} />
+            <span className={styles.input}>
+                <div className={styles.example}><i>{' '}"Go walk your pug" or "think about roses and sunshine"</i></div>
+
+                <input className={styles.inputWidth} onChange={onChangeText} name="phrase" type="text" value={phrase} />
+            </span>
+            <button
+                className={styles.button}
+                onClick={onClickSubmit}
             >Submit</button>
         </div>
     );
@@ -93,6 +105,7 @@ export default function SimpleModal({postAction, postThought, emotion}) {
                 onClose={handleClose}
                 aria-labelledby="simple-modal-title"
                 aria-describedby="simple-modal-description"
+
             >
                 {body}
             </Modal>

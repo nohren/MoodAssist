@@ -24,13 +24,15 @@ export default class extends Component {
       time: '',
       cssFlash: false,
       suggestion: false,
-      action: {},
-      thought: {}
+      emojiPic: '',
+      action: { action: '' },
+      thought: { thought: '' }
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleClickSuggestion = this.handleClickSuggestion.bind(this);
     this.postAction = this.postAction.bind(this);
     this.postThought = this.postThought.bind(this);
+    this.setState = this.setState.bind(this);
   }
   //Go ...<actionphrase> And ... <thoughtphrase>
 
@@ -38,14 +40,16 @@ export default class extends Component {
   //an emotion
   //how much time
 
-  chooseEmotion(emotion) {
+  chooseEmotion(emotion, emoji) {
     if (this.state.emotion !== emotion) {
       this.setState({
-        emotion: emotion
+        emotion: emotion,
+        emojiPic: emoji
       })
     } else {
       this.setState({
-        emotion: ''
+        emotion: '',
+        emojiPic: ''
       })
     }
   }
@@ -66,10 +70,10 @@ export default class extends Component {
         //filter the arrays for that
         if (time === 0) {
           let actionFilter = actions.filter(action => {
-            return action.timeRequired === 0;  
+            return action.timeRequired === 0;
           })
           let thoughtFilter = thoughts.filter(thought => {
-            return thought.timeRequired === 0;  
+            return thought.timeRequired === 0;
           })
           let action = randomObj(actionFilter);
           let thought = randomObj(thoughtFilter);
@@ -78,13 +82,13 @@ export default class extends Component {
             action,
             thought
           })
-          
+
         } else if (time === 1) {
           let actionFilter = actions.filter(action => {
-            return action.timeRequired === 1;  
+            return action.timeRequired === 1;
           })
           let thoughtFilter = thoughts.filter(thought => {
-            return thought.timeRequired === 0 || thought.timeRequired === 1;  
+            return thought.timeRequired === 0 || thought.timeRequired === 1;
           })
           let action = randomObj(actionFilter);
           let thought = randomObj(thoughtFilter);
@@ -95,10 +99,10 @@ export default class extends Component {
           })
         } else {
           let actionFilter = actions.filter(action => {
-            return action.timeRequired === 1 || action.timeRequired === 2;  
+            return action.timeRequired === 1 || action.timeRequired === 2;
           })
           let thoughtFilter = thoughts.filter(thought => {
-            return thought.timeRequired === 0 || thought.timeRequired === 1 || thought.timeRequired === 2;  
+            return thought.timeRequired === 0 || thought.timeRequired === 1 || thought.timeRequired === 2;
           })
           let action = randomObj(actionFilter);
           let thought = randomObj(thoughtFilter);
@@ -123,12 +127,12 @@ export default class extends Component {
       phrase
     }
     axios.post('api/backend?kind=thought', params)
-    .then((result) => {
-      console.log(result)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+      .then((result) => {
+        console.log(result)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   postAction(emotion, time, phrase) {
@@ -140,12 +144,12 @@ export default class extends Component {
       phrase
     }
     axios.post('api/backend?kind=action', params)
-    .then((result) => {
-      console.log(result)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+      .then((result) => {
+        console.log(result)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   handleClickSuggestion() {
@@ -163,7 +167,7 @@ export default class extends Component {
     const boundToggle = toggleCSS.bind(this);
     setTimeout(boundToggle, 3000);
   }
-  
+
 
   render() {
 
@@ -189,7 +193,7 @@ export default class extends Component {
                 <div className={styles.emoji}
                   onMouseEnter={() => { this.setState({ showHoverHappy: true }) }}
                   onMouseLeave={() => { this.setState({ showHoverHappy: false }) }}
-                  onClick={() => { this.chooseEmotion('happy') }}
+                  onClick={() => { this.chooseEmotion('happy', '😃') }}
                 >😃
                 {this.state.showHoverHappy || this.state.emotion === 'happy' ?
                     <div
@@ -199,7 +203,7 @@ export default class extends Component {
                 <div className={styles.emoji}
                   onMouseEnter={() => { this.setState({ showHoverAngry: true }) }}
                   onMouseLeave={() => { this.setState({ showHoverAngry: false }) }}
-                  onClick={() => { this.chooseEmotion('angry') }}
+                  onClick={() => { this.chooseEmotion('angry', '😠') }}
                 >😠
                  {this.state.showHoverAngry || this.state.emotion === 'angry' ?
                     <div
@@ -209,7 +213,7 @@ export default class extends Component {
                 <div className={styles.emoji}
                   onMouseEnter={() => { this.setState({ showHoverAnxious: true }) }}
                   onMouseLeave={() => { this.setState({ showHoverAnxious: false }) }}
-                  onClick={() => { this.chooseEmotion('anxious') }}
+                  onClick={() => { this.chooseEmotion('anxious', '😨') }}
                 >😨
                 {this.state.showHoverAnxious || this.state.emotion === 'anxious' ?
                     <div
@@ -221,7 +225,7 @@ export default class extends Component {
                 <div className={styles.emoji}
                   onMouseEnter={() => { this.setState({ showHoverLonely: true }) }}
                   onMouseLeave={() => { this.setState({ showHoverLonely: false }) }}
-                  onClick={() => { this.chooseEmotion('lonely') }}
+                  onClick={() => { this.chooseEmotion('lonely', '😔') }}
                 >😔
                 {this.state.showHoverLonely || this.state.emotion === 'lonely' ?
                     <div
@@ -231,7 +235,7 @@ export default class extends Component {
                 <div className={styles.emoji}
                   onMouseEnter={() => { this.setState({ showHoverInsecure: true }) }}
                   onMouseLeave={() => { this.setState({ showHoverInsecure: false }) }}
-                  onClick={() => { this.chooseEmotion('insecure') }}
+                  onClick={() => { this.chooseEmotion('insecure', '😒') }}
                 >😒
                 {this.state.showHoverInsecure || this.state.emotion === 'insecure' ?
                     <div
@@ -241,7 +245,7 @@ export default class extends Component {
                 <div className={styles.emoji}
                   onMouseEnter={() => { this.setState({ showHoverTired: true }) }}
                   onMouseLeave={() => { this.setState({ showHoverTired: false }) }}
-                  onClick={() => { this.chooseEmotion('tired') }}
+                  onClick={() => { this.chooseEmotion('tired', '😴') }}
                 >😴
                 {this.state.showHoverTired || this.state.emotion === 'tired' ?
                     <div
@@ -254,7 +258,7 @@ export default class extends Component {
                 <div className={styles.emoji}
                   onMouseEnter={() => { this.setState({ showHoverSad: true }) }}
                   onMouseLeave={() => { this.setState({ showHoverSad: false }) }}
-                  onClick={() => { this.chooseEmotion('sad') }}
+                  onClick={() => { this.chooseEmotion('sad', '😢') }}
                 >😢
                 {this.state.showHoverSad || this.state.emotion === 'sad' ?
                     <div
@@ -264,7 +268,7 @@ export default class extends Component {
                 <div className={styles.emoji}
                   onMouseEnter={() => { this.setState({ showHoverConfident: true }) }}
                   onMouseLeave={() => { this.setState({ showHoverConfident: false }) }}
-                  onClick={() => { this.chooseEmotion('confident') }}
+                  onClick={() => { this.chooseEmotion('confident', '😎') }}
                 >😎
                 {this.state.showHoverConfident || this.state.emotion === 'confident' ?
                     <div
@@ -274,7 +278,7 @@ export default class extends Component {
                 <div className={styles.emoji}
                   onMouseEnter={() => { this.setState({ showHoverLove: true }) }}
                   onMouseLeave={() => { this.setState({ showHoverLove: false }) }}
-                  onClick={() => { this.chooseEmotion('loved') }}
+                  onClick={() => { this.chooseEmotion('loved', '😍') }}
                 >😍
                 {this.state.showHoverLove || this.state.emotion === 'loved' ?
                     <div
@@ -313,9 +317,9 @@ export default class extends Component {
             >
               Ali-Oop my mood!
           </button>
-          <span className={styles.modalButton}>
-             <Modal  emotion={this.state.emotion} postAction={this.postAction} postThought={this.postThought}/>
-            </span>             
+            <span className={styles.modalButton}>
+              <Modal emojiPic={this.state.emojiPic} emotion={this.state.emotion} postAction={this.postAction} postThought={this.postThought} />
+            </span>
           </div>
         </main>
       </div>

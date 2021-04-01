@@ -280,10 +280,14 @@
 
   .input {
     position: relative;
-    top: -30px;
+    top: -47px;
     left: 45%;
     width: 400px
   }
   .inputWidth {
-    width: 290px;
+    width: 332px;
+  }
+
+  .example {
+    font-size: small;
   }
