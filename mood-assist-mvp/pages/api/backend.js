@@ -21,7 +21,6 @@ export default (req, res) => {
     //query string { kind: 'thought' } { kind: 'action' }
     // console.log(req.body)
     // console.log(req.query)
-    console.log(req.query)
     if (req.query.kind === 'thought') {
       //handle thought insert to db for emotion
       //build obj
