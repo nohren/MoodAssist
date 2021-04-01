@@ -120,12 +120,6 @@
   height: 1em;
 }
 
-@media (max-width: 600px) {
-  .grid {
-    width: 100%;
-    flex-direction: column;
-  }
-}
 
 
 .card {
@@ -146,7 +140,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;  
-
+  
 }
 
 .emoji {
@@ -182,7 +176,7 @@
   flex-direction: column;
   justify-content: space-between;
   width: 370px;
- 
+  
 }
 
 .radioGroup {
@@ -224,7 +218,7 @@
   font-size: 1.5rem;
   text-align: left;
   width: 760px;
- 
+  
 }
 
 .suggestionCard {
@@ -260,39 +254,47 @@
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-
+  
   -webkit-animation: myfirst 5s ; /* Chrome, Safari, Opera */
   animation: myfirst 5s ;
 }
 
-  /* Chrome, Safari, Opera */
-  @-webkit-keyframes myfirst {
-    from {opacity: 0.2;}
-    to {opacity: 1;}
-  }
+/* Chrome, Safari, Opera */
+@-webkit-keyframes myfirst {
+  from {opacity: 0.2;}
+  to {opacity: 1;}
+}
 
-  /* Standard syntax */
-  @keyframes myfirst {
-    from {opacity: 0.2;}
-    to {opacity: 1;}
-  }
+/* Standard syntax */
+@keyframes myfirst {
+  from {opacity: 0.2;}
+  to {opacity: 1;}
+}
 
-  /* .modalContainer {
-    display: flex;
-    flex-direction: row;
-    justify-content: left;
-  } */
+/* .modalContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+} */
 
-  .input {
-    position: relative;
-    top: -47px;
-    left: 45%;
-    width: 400px
-  }
-  .inputWidth {
-    width: 332px;
-  }
+.input {
+  position: relative;
+  top: -47px;
+  left: 45%;
+  width: 400px
+}
+.inputWidth {
+  width: 332px;
+}
 
-  .example {
-    font-size: small;
+.example {
+  font-size: small;
+}
+
+@media (max-width: 600px) {
+  .grid {
+    width: 100%;
+    flex-direction: column;
   }
+}
+
