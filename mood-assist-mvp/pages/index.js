@@ -5,10 +5,7 @@ import Radio from '@material-ui/core/Radio';
 import { RadioGroup } from '@material-ui/core';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import axios from 'axios';
-import { makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
+import Modal from '../components/personalizeModal';
 
 export default class extends Component {
   constructor(props) {
@@ -27,10 +24,12 @@ export default class extends Component {
       cssFlash: false,
       suggestion: false,
       actions: [{ actionPhrase: 'Run your favorite trail', helpfulness: 5, date: new Date() }],
-      thoughts: [{ thoughtPhrase: 'and ponder getting a new dog', helpfulness: 5, date: new Date() }]
+      thoughts: [{ thoughtPhrase: 'pondering getting a new dog', helpfulness: 5, date: new Date() }]
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleClickSuggestion = this.handleClickSuggestion.bind(this);
+    this.postAction = this.postAction.bind(this);
+    this.postThought = this.postThought.bind(this);
   }
   //Go ...<actionphrase> And ... <thoughtphrase>
 
@@ -57,8 +56,7 @@ export default class extends Component {
   }
 
   getSuggestion() {
-
-    axios.get(`http://localhost:3000/api/backend?emotion=${this.state.emotion}&time=${this.state.time}`)
+    axios.get(`http://localhost:3000/api/backend?emotion=${this.state.emotion}&timeRequired=${this.state.time}`)
       .then((result) => {
         console.log(result)
       })
@@ -67,24 +65,33 @@ export default class extends Component {
       })
   }
 
-  // postThought() {
-  //   const params = {
-  //     firstName: 'Oren'
-  //   }
-  //   axios.post('http://localhost:3000/api/backend', params)
-  //   .then((result) => {
-  //     console.log(result)
-  //   })
-  //   .catch((err) => {
-  //     console.log(err)
-  //   })
-  // }
+  postThought(emotion, time, phrase) {
+    // console.log('thought post')
+    console.log(emotion + ' ' + time + " " + phrase)
+    const params = {
+      emotion,
+      timeRequired: time,
+      phrase
+    }
+    axios.post('http://localhost:3000/api/backend?kind=thought', params)
+    .then((result) => {
+      console.log(result)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
 
-  // postAction() {
-
-  // }
+  postAction(emotion, time, phrase) {
+    // console.log('action post')
+    // console.log(emotion + ' ' + time + " " + phrase)
+  }
 
   handleClickSuggestion() {
+    if (this.state.emotion === '' || this.state.time === '') {
+      alert('You must select an emotion and a time!')
+      return;
+    }
     this.getSuggestion()
     this.setState({ cssFlash: true })
 
@@ -96,8 +103,7 @@ export default class extends Component {
     const boundToggle = toggleCSS.bind(this);
     setTimeout(boundToggle, 3000);
   }
-
-
+  
 
   render() {
 
@@ -234,17 +240,23 @@ export default class extends Component {
             Mood assist sends you suggestions based on your current mood. These suggestions are modeled off the action-thought
             paradigm of nuerolinguistic programming (NLP).
           </p>
+
           <div className={this.state.cssFlash ? styles.suggestionCardImg : styles.suggestionCard}>
-            {this.state.suggestion && !this.state.cssFlash?
+            {this.state.suggestion && !this.state.cssFlash ?
               <p className={styles.suggestion}>
-                {this.state.actions[0].actionPhrase} and {this.state.thoughts[0].thoughtPhrase}!
+                {this.state.actions[0].actionPhrase} while {this.state.thoughts[0].thoughtPhrase}!
               </p> : null}
           </div>
+          <div className={styles.buttonContainer}>
             <button className={styles.button}
               onClick={this.handleClickSuggestion}
             >
               Ali-Oop my mood!
           </button>
+          <span className={styles.modalButton}>
+             <Modal  emotion={this.state.emotion} postAction={this.postAction} postThought={this.postThought}/>
+            </span>             
+          </div>
         </main>
       </div>
     )

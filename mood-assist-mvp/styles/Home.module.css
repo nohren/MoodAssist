@@ -184,6 +184,13 @@
   width: 370px;
 }
 
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 850px;
+}
+
 .button {
   background-color: #4CAF50;
   color: white;
@@ -191,7 +198,7 @@
   margin: 10px 0;
   border: none;
   cursor: pointer;
-  width: 97%;
+  width: 85%;
   position: relative;
   top: 80%;
   border-radius: 10px;
@@ -263,4 +270,20 @@
   @keyframes myfirst {
     from {opacity: 0.2;}
     to {opacity: 1;}
+  }
+
+  /* .modalContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+  } */
+
+  .input {
+    position: relative;
+    top: -30px;
+    left: 45%;
+    width: 400px
+  }
+  .inputWidth {
+    width: 290px;
   }

@@ -1,20 +1,37 @@
 const mongoose = require('mongoose');
 
 const emotionSchema = mongoose.Schema({
+    emotion: {
+        type: String,
+        unique: true
+    },
     actions: [{ 
-        actionPhrase: String, 
+        action: String, 
         helpfulness: Number, 
-        date: Date,
-        time: Number 
+        dateAdded: Date,
+        timeRequired: Number 
     }],
     thoughts: [{ 
-        thoughtPhrase: String, 
+        thought: String, 
         helpfulness: Number, 
-        date: Date,
-        time: Number
+        dateAdded: Date,
+        timeRequired: Number
     }],
+    
 });
 
-const Emotion = mongoose.model('Emotion', emotionSchema);
 
-module.exports = Emotion;
+//separation of concerns for userActions
+
+// const InsightSchema = mongoose.Schema({
+//     userActions: [{
+//         emotion: String,
+//         dateFelt: Date,
+//         timeAlotted: Number
+//     }]
+// })
+
+// const Insight = mongoose.model('Insight', InsightSchema);
+
+module.exports = mongoose.models.Emotion || mongoose.model('Emotion', emotionSchema);
+
